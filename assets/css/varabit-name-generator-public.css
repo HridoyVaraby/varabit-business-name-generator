@@ -140,6 +140,13 @@
     font-weight: 500;
 }
 
+.varabit-check-method {
+    font-size: 11px;
+    color: #777;
+    font-style: italic;
+    margin-left: 5px;
+}
+
 .varabit-register-link {
     display: inline-block;
     padding: 3px 8px;
@@ -198,6 +205,30 @@
     border-radius: 4px;
     margin-top: 20px;
     font-weight: 500;
+    display: none;
+}
+
+.varabit-error-important {
+    background-color: #fdecea;
+    border-left: 4px solid #d32f2f;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.varabit-admin-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 10px;
+    background-color: #2271b1;
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: normal;
+}
+
+.varabit-admin-link:hover {
+    background-color: #135e96;
+    color: #ffffff !important;
 }
 
 /* Responsive styles */

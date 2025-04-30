@@ -81,6 +81,7 @@
                 url: varabit_name_generator.ajax_url,
                 type: 'POST',
                 data: data,
+                dataType: 'json',
                 success: function(response) {
                     $loading.hide();
                     
@@ -90,9 +91,10 @@
                         showError(response.data.message || 'An error occurred while generating names.');
                     }
                 },
-                error: function() {
+                error: function(xhr, status, error) {
                     $loading.hide();
-                    showError('Failed to connect to the server. Please try again.');
+                    console.error('AJAX Error:', status, error);
+                    showError('Connection error occurred. This might be due to WHOIS server connectivity issues. The plugin will automatically fall back to DNS-only checks for domain availability.');
                 }
             });
         }
@@ -127,11 +129,33 @@
                     if (varabit_name_generator.domain_check === '1') {
                         const availabilityClass = item.is_available ? 'varabit-domain-available' : 'varabit-domain-unavailable';
                         const availabilityText = item.is_available ? 'Available' : 'Unavailable';
-                        const availabilityMessage = item.message ? ` (${item.message})` : '';
+                        
+                        // Extract check method from the message if available
+                        let checkMethod = '';
+                        let cleanMessage = '';
+                        
+                        if (item.message) {
+                            // Extract the check method information from the message
+                            if (item.message.includes('WHOIS check')) {
+                                checkMethod = 'WHOIS check';
+                                cleanMessage = item.message.replace(/\(WHOIS check\)/g, '').trim();
+                            } else if (item.message.includes('DNS check')) {
+                                checkMethod = 'DNS check only';
+                                cleanMessage = item.message.replace(/\(DNS check only\)/g, '').trim();
+                            } else {
+                                cleanMessage = item.message;
+                            }
+                        }
+                        
+                        // Format the message with check method styled separately
+                        const availabilityMessage = cleanMessage ? ` (${cleanMessage})` : '';
+                        const methodInfo = checkMethod ? `<span class="varabit-check-method">${checkMethod}</span>` : '';
+                        
                         domainInfo = `<div class="varabit-domain-info">
-                            <span class="${availabilityClass}">${item.domain} - ${availabilityText}${availabilityMessage}</span>
+                            <span class="${availabilityClass}">${item.domain} - ${availabilityText}${availabilityMessage} ${methodInfo}</span>
                             ${item.is_available ? '<a href="https://www.namecheap.com/domains/registration/results/?domain=' + item.domain + '" target="_blank" class="varabit-register-link">Register</a>' : ''}
                         </div>`;
+                    }
                     }
                 } else {
                     name = item;
@@ -205,7 +229,26 @@
          * @param {string} message The error message.
          */
         function showError(message) {
-            $error.text(message).show();
+            // Check if the error is related to API key
+            if (message.includes('API key')) {
+                // Add admin link if user has permissions
+                if (varabit_name_generator.is_admin) {
+                    message += ' <a href="' + varabit_name_generator.admin_url + '" class="varabit-admin-link">Configure API Key</a>';
+                }
+                // Make API key errors more prominent
+                $error.html(message).addClass('varabit-error-important').show();
+            } 
+            // Check if the error is related to WHOIS connectivity
+            else if (message.includes('WHOIS server')) {
+                // Make WHOIS errors informative but not alarming
+                $error.html(message).removeClass('varabit-error-important').show();
+                // Continue with name generation as the plugin will use DNS fallback
+                setTimeout(function() {
+                    $error.fadeOut(1000);
+                }, 5000);
+            } else {
+                $error.html(message).removeClass('varabit-error-important').show();
+            }
         }
     }
 

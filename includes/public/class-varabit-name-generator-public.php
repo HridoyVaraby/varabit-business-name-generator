@@ -74,6 +74,8 @@ class Varabit_Name_Generator_Public {
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('varabit_name_generator_nonce'),
             'domain_check' => $this->is_domain_check_enabled(),
+            'is_admin' => current_user_can('manage_options'),
+            'admin_url' => admin_url('options-general.php?page=' . $this->plugin_name),
         ));
     }
 
@@ -123,24 +125,57 @@ class Varabit_Name_Generator_Public {
         // Validate input
         if (empty($keywords)) {
             wp_send_json_error(array('message' => __('Please enter keywords for your business name.', 'varabit-business-name-generator')));
+            return;
         }
         
-        // Initialize API class
-        $api = new Varabit_Name_Generator_API();
-        
-        // Generate names
-        $result = $api->generate_business_names($keywords, $tone, $industry);
-        
-        if (is_wp_error($result)) {
-            wp_send_json_error(array('message' => $result->get_error_message()));
+        try {
+            // Check if API key is configured
+            $options = get_option($this->plugin_name . '_options');
+            $api_key = isset($options['gemini_api_key']) ? trim($options['gemini_api_key']) : '';
+            
+            if (empty($api_key)) {
+                wp_send_json_error(array('message' => __('Google Gemini API key is not configured. Please set it in the plugin settings.', 'varabit-business-name-generator')));
+                return;
+            }
+            
+            // Initialize API class
+            $api = new Varabit_Name_Generator_API();
+            
+            // Generate names
+            $result = $api->generate_business_names($keywords, $tone, $industry);
+            
+            if (is_wp_error($result)) {
+                $error_code = $result->get_error_code();
+                $error_message = $result->get_error_message();
+                
+                // Log error for debugging
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('Varabit Name Generator - Error: ' . $error_code . ' - ' . $error_message);
+                }
+                
+                wp_send_json_error(array('message' => $error_message));
+                return;
+            }
+            
+            // Check if we got valid results
+            if (empty($result) || !is_array($result)) {
+                wp_send_json_error(array('message' => __('No name suggestions were generated. Please try different keywords.', 'varabit-business-name-generator')));
+                return;
+            }
+            
+            // Check domain availability if enabled
+            if ($this->is_domain_check_enabled()) {
+                $result = $this->check_domain_availability($result);
+            }
+            
+            wp_send_json_success(array('names' => $result));
+            
+        } catch (Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Varabit Name Generator - Exception: ' . $e->getMessage());
+            }
+            wp_send_json_error(array('message' => __('An unexpected error occurred. Please try again later.', 'varabit-business-name-generator')));
         }
-        
-        // Check domain availability if enabled
-        if ($this->is_domain_check_enabled()) {
-            $result = $this->check_domain_availability($result);
-        }
-        
-        wp_send_json_success(array('names' => $result));
     }
 
     /**

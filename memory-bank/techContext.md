@@ -8,7 +8,7 @@
 - **HTML/CSS**: Frontend structure and styling
 - **WordPress Plugin API**: Integration with WordPress core
 - **Google Gemini API**: AI service for generating business name suggestions
-- **DNS Lookup**: For domain availability checking
+- **DNS Lookup + WHOIS**: Enhanced domain availability checking using both DNS and WHOIS server verification
 
 ### Libraries & Frameworks
 - **jQuery**: Simplifies DOM manipulation and AJAX requests (included with WordPress)
