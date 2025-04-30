@@ -127,7 +127,11 @@
                     if (varabit_name_generator.domain_check === '1') {
                         const availabilityClass = item.is_available ? 'varabit-domain-available' : 'varabit-domain-unavailable';
                         const availabilityText = item.is_available ? 'Available' : 'Unavailable';
-                        domainInfo = `<div class="varabit-domain-info"><span class="${availabilityClass}">${item.domain} - ${availabilityText}</span></div>`;
+                        const availabilityMessage = item.message ? ` (${item.message})` : '';
+                        domainInfo = `<div class="varabit-domain-info">
+                            <span class="${availabilityClass}">${item.domain} - ${availabilityText}${availabilityMessage}</span>
+                            ${item.is_available ? '<a href="https://www.namecheap.com/domains/registration/results/?domain=' + item.domain + '" target="_blank" class="varabit-register-link">Register</a>' : ''}
+                        </div>`;
                     }
                 } else {
                     name = item;

@@ -151,21 +151,12 @@ class Varabit_Name_Generator_Public {
      * @return   array              The names with domain availability information.
      */
     private function check_domain_availability($names) {
-        $result = array();
+        // Initialize the domain API class
+        require_once VARABIT_NAME_GENERATOR_PLUGIN_DIR . 'includes/api/class-varabit-name-generator-domain-api.php';
+        $domain_api = new Varabit_Name_Generator_Domain_API();
         
-        foreach ($names as $name) {
-            // Convert to domain-friendly format
-            $domain_name = strtolower(str_replace(' ', '', $name));
-            
-            // Simple check using DNS lookup
-            $is_available = !checkdnsrr($domain_name . '.com', 'ANY');
-            
-            $result[] = array(
-                'name' => $name,
-                'domain' => $domain_name . '.com',
-                'is_available' => $is_available,
-            );
-        }
+        // Check availability for all names
+        $result = $domain_api->check_multiple_domains($names);
         
         return $result;
     }

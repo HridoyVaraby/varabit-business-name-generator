@@ -7,7 +7,8 @@
 - **JavaScript**: Frontend interactivity and AJAX communication
 - **HTML/CSS**: Frontend structure and styling
 - **WordPress Plugin API**: Integration with WordPress core
-- **Google Gemini 2.0 Flash API**: AI service for generating business name suggestions
+- **Google Gemini API**: AI service for generating business name suggestions
+- **DNS Lookup**: For domain availability checking
 
 ### Libraries & Frameworks
 - **jQuery**: Simplifies DOM manipulation and AJAX requests (included with WordPress)
@@ -27,7 +28,9 @@
   ├── includes/
   │   ├── class-varabit-name-generator.php
   │   ├── class-varabit-name-generator-admin.php
-  │   └── class-varabit-name-generator-api.php
+  │   ├── api/
+  │   │   ├── class-varabit-name-generator-api.php
+  │   │   └── class-varabit-name-generator-domain-api.php
   ├── templates/
   │   ├── admin-settings.php
   │   └── generator-form.php
@@ -68,6 +71,7 @@
 ### API Communication
 - **wp_remote_post()**: For making API requests to Google Gemini
 - **JSON Processing**: For handling API responses
+- **checkdnsrr()**: PHP function for DNS-based domain availability checking
 
 ### Frontend Integration
 - **wp_enqueue_script/style()**: For proper asset loading
