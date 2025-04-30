@@ -1,0 +1,65 @@
+/**
+ * Admin-specific CSS for the Varabit Business Name Generator.
+ *
+ * @since      1.0.0
+ */
+
+/* Settings page styles */
+.varabit-name-generator-info {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.varabit-name-generator-info h2 {
+    margin-top: 0;
+    color: #23282d;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+}
+
+.varabit-name-generator-info h3 {
+    font-size: 1.1em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.varabit-name-generator-info code {
+    background: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.varabit-name-generator-info ul {
+    margin-left: 20px;
+}
+
+/* Form field styles */
+.form-table th {
+    width: 200px;
+}
+
+.form-table input[type="password"],
+.form-table input[type="text"],
+.form-table select {
+    width: 300px;
+}
+
+.form-table .description {
+    font-style: italic;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Color picker field */
+.form-table input[type="color"] {
+    width: 60px;
+    height: 30px;
+    padding: 0;
+    cursor: pointer;
+}

@@ -1,0 +1,196 @@
+/**
+ * Public-facing CSS for the Varabit Business Name Generator.
+ *
+ * @since      1.0.0
+ */
+
+/* Container styles */
+.varabit-name-generator-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+/* Form styles */
+.varabit-name-generator-form {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.varabit-name-generator-form .form-group {
+    margin-bottom: 15px;
+}
+
+.varabit-name-generator-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.varabit-name-generator-form input[type="text"],
+.varabit-name-generator-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.varabit-name-generator-form button {
+    background-color: #4CAF50; /* Default, will be overridden by settings */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.varabit-name-generator-form button:hover {
+    opacity: 0.9;
+}
+
+/* Results styles */
+.varabit-name-generator-results {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.varabit-name-generator-results h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.varabit-results-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.varabit-secondary-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.varabit-secondary-btn:hover {
+    background-color: #e5e5e5;
+}
+
+.varabit-names-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.varabit-name-item {
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.varabit-name-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.varabit-name-text {
+    font-weight: 600;
+    color: #333;
+}
+
+.varabit-domain-info {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #666;
+}
+
+.varabit-domain-available {
+    color: #4CAF50;
+}
+
+.varabit-domain-unavailable {
+    color: #f44336;
+}
+
+.varabit-copy-btn {
+    background-color: transparent;
+    border: none;
+    color: #2196F3;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.varabit-copy-btn:hover {
+    color: #0b7dda;
+}
+
+/* Loading styles */
+.varabit-loading {
+    text-align: center;
+    padding: 20px;
+    display: none;
+}
+
+.varabit-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.varabit-error {
+    background-color: #ffebee;
+    color: #f44336;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .varabit-names-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .varabit-results-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .varabit-secondary-btn {
+        width: 100%;
+    }
+}
