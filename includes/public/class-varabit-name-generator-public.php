@@ -190,9 +190,26 @@ class Varabit_Name_Generator_Public {
         require_once VARABIT_NAME_GENERATOR_PLUGIN_DIR . 'includes/api/class-varabit-name-generator-domain-api.php';
         $domain_api = new Varabit_Name_Generator_Domain_API();
         
-        // Check availability for all names
+        // Check availability for all names with retry logic
         $result = $domain_api->check_multiple_domains($names);
         
-        return $result;
+        // Filter to only return available domains
+        $available_domains = array_filter($result, function($item) {
+            return $item['is_available'];
+        });
+        
+        // If no available domains found, generate new variations and retry
+        if (empty($available_domains)) {
+            $new_names = array_map(function($name) {
+                return $name . rand(1, 999); // Generate new variations
+            }, $names);
+            
+            $result = $domain_api->check_multiple_domains($new_names);
+            $available_domains = array_filter($result, function($item) {
+                return $item['is_available'];
+            });
+        }
+        
+        return $available_domains;
     }
 }
