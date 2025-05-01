@@ -156,7 +156,6 @@
                             ${item.is_available ? '<a href="https://www.namecheap.com/domains/registration/results/?domain=' + item.domain + '" target="_blank" class="varabit-register-link">Register</a>' : ''}
                         </div>`;
                     }
-                    }
                 } else {
                     name = item;
                 }
